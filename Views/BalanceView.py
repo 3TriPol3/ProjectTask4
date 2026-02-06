@@ -9,7 +9,7 @@ class BalanceView(Tk):
 
         # Атрибуты окна
         self.title("Показать баланс")
-        self.geometry("1280x920")
+        self.geometry("1280x750")
 
 
 

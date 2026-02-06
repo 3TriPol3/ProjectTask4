@@ -2,6 +2,10 @@ from tkinter import *
 from tkinter import ttk
 
 from Controllers.TransactionController import *
+from Views.BalanceView import BalanceView
+from Views.DeleteView import DeleteView
+from Views.SortView import SortView
+
 
 class TransactionView(Tk):
     def __init__(self):
@@ -9,7 +13,7 @@ class TransactionView(Tk):
 
         # Атрибуты окна
         self.title("Система учета финансов")
-        self.geometry("1280x920")
+        self.geometry("1280x750")
 
         # Фрейм Добавить транзакцию
         self.add_frame = ttk.Frame(self, borderwidth=1, relief=SOLID, padding=[18], # Внутренние отступы фрейма
@@ -20,7 +24,7 @@ class TransactionView(Tk):
         self.add_title_frame = ttk.Frame(self.add_frame, relief=SOLID, borderwidth=1, padding=[8, 10])
         self.add_title_frame.pack(anchor=CENTER, fill=X, padx=10, pady=10,)
 
-        self.add_title = ttk.Label(self.add_title_frame, text="Добавить пост")
+        self.add_title = ttk.Label(self.add_title_frame, text="Добавить Транзакцию")
         self.add_title.pack()
 
         # Фрейм в котором расположены окна ввода данных о Транзакциях (Находится внутри фрейма add_frame)
@@ -75,7 +79,7 @@ class TransactionView(Tk):
         self.columns = ('id', "category", 'amount', 'type', 'date', 'description')  # Столбцы
         self.table_data = ttk.Treeview(self.table_frame, columns=self.columns, show='headings')
 
-        # Заголовки
+        # Заголовки таблицы
         self.table_data.heading('id', text="№")
         self.table_data.heading('category', text='Категория')
         self.table_data.heading('amount', text='Сумма')
@@ -88,24 +92,29 @@ class TransactionView(Tk):
         self.table()
 
         # Фрейм для редактирования транзакции
-        self.edit_frame = ttk.Frame(self, padding=[20])
-        self.edit_frame.pack(anchor=CENTER, padx=5, pady=5)
+        self.delete_frame = ttk.Frame(self, padding=[10])
+        self.delete_frame.pack(anchor=CENTER, padx=5, pady=5)
 
         # Фрейм окна удаления транзакций
-        self.delete_frame = ttk.Frame(self, padding=[20])
-        self.delete_frame.pack(anchor=CENTER, padx=5, pady=5)
+        self.balance_frame = ttk.Frame(self, padding=[10])
+        self.balance_frame.pack(anchor=CENTER, padx=5, pady=5)
+
+        # Фрейм окна баланса
+        self.sort_frame = ttk.Frame(self, padding=[10])
+        self.sort_frame.pack(anchor=CENTER, padx=5, pady=5)
 
         # Кнопка перехода в окно удаления транзакций
         self.button_delete = ttk.Button(self.delete_frame, text="Удаление транзакций", command=self.delete_window)
         self.button_delete.grid(row=1, column=2, padx=5, sticky="s")
 
         # Кнопка перехода в окно редактирования транзакций
-        self.update_content = ttk.Button(self.edit_frame, text="Редактировать транзакцию", command=self.balance_window)
-        self.update_content.grid(row=1, column=3, padx=5, sticky="s")
+        self.button_balance = ttk.Button(self.balance_frame, text="Показать баланс", command=self.balance_window)
+        self.button_balance.grid(row=1, column=3, padx=5, sticky="s")
 
         # Кнопка перехода в окно сортировки транзакций
-        self.update_content = ttk.Button(self.edit_frame, text="Сортировка транзакций", command=self.sort_window)
-        self.update_content.grid(row=1, column=4, padx=5, sticky="s")
+        self.button_sort = ttk.Button(self.sort_frame, text="Фильтрация транзакций", command=self.sort_window)
+        self.button_sort.grid(row=1, column=4, padx=5, sticky="s")
+
 
     def delete_window(self):
         window = DeleteView()
@@ -124,12 +133,11 @@ class TransactionView(Tk):
         # Очистить старые записи
         for item in self.table_data.get_children():
             self.table_data.delete(item)
-
-        self.elemnt = []
+        self.el = []
         for el in TransactionController.get():
-            self.elemnt.append((el.id, el.category, el.amount, el.type, el.date, el.description))
+            self.el.append((el.id, el.category, el.amount, el.type, el.date, el.description))
         # Вывод данных из БД в таблицу
-        for item in self.elemnt:
+        for item in self.el:
             self.table_data.insert("", END, values=item)
         self.table_data.pack()
 
