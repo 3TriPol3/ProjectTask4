@@ -70,3 +70,109 @@ class TransactionView(Tk):
         # Фрейм Таблицы
         self.table_frame = ttk.Frame(self, padding=[20])
         self.table_frame.pack(anchor=CENTER, pady=10, padx=10)
+
+        # Таблица
+        self.columns = ('id', "category", 'amount', 'type', 'date', 'description')  # Столбцы
+        self.table_data = ttk.Treeview(self.table_frame, columns=self.columns, show='headings')
+
+        # Заголовки
+        self.table_data.heading('id', text="№")
+        self.table_data.heading('category', text='Категория')
+        self.table_data.heading('amount', text='Сумма')
+        self.table_data.heading('type', text='Тип транзакции')
+        self.table_data.heading('date', text='Дата транзакции')
+        self.table_data.heading('description', text='Описание')
+        # Для события выбора строки из таблицы вызову метод row_selected
+        self.table_data.bind("<<TreeviewSelect>>", self.row_selected)
+        # Превращает объекты из БД в список кортежей для таблицы
+        self.table()
+
+        # Фрейм для редактирования транзакции
+        self.edit_frame = ttk.Frame(self, padding=[20])
+        self.edit_frame.pack(anchor=CENTER, padx=5, pady=5)
+
+        # Фрейм окна удаления транзакций
+        self.delete_frame = ttk.Frame(self, padding=[20])
+        self.delete_frame.pack(anchor=CENTER, padx=5, pady=5)
+
+        # Кнопка перехода в окно удаления транзакций
+        self.button_delete = ttk.Button(self.delete_frame, text="Удаление транзакций", command=self.delete_window)
+        self.button_delete.grid(row=1, column=2, padx=5, sticky="s")
+
+        # Кнопка перехода в окно редактирования транзакций
+        self.update_content = ttk.Button(self.edit_frame, text="Редактировать транзакцию", command=self.balance_window)
+        self.update_content.grid(row=1, column=3, padx=5, sticky="s")
+
+        # Кнопка перехода в окно сортировки транзакций
+        self.update_content = ttk.Button(self.edit_frame, text="Сортировка транзакций", command=self.sort_window)
+        self.update_content.grid(row=1, column=4, padx=5, sticky="s")
+
+    def delete_window(self):
+        window = DeleteView()
+        self.destroy()
+
+    def sort_window(self):
+        window = SortView()
+        self.destroy()
+
+    def balance_window(self):
+        window = BalanceView()
+        self.destroy()
+
+    # Для обновления данных в таблице создал метод добавления записей из БД
+    def table(self):
+        # Очистить старые записи
+        for item in self.table_data.get_children():
+            self.table_data.delete(item)
+
+        self.elemnt = []
+        for el in TransactionController.get():
+            self.elemnt.append((el.id, el.category, el.amount, el.type, el.date, el.description))
+        # Вывод данных из БД в таблицу
+        for item in self.elemnt:
+            self.table_data.insert("", END, values=item)
+        self.table_data.pack()
+
+    def add_data(self):
+        self.category = self.add_category.get()
+        self.amount = self.add_amount.get()
+        self.type = self.add_type.get()
+        self.date = self.add_date.get()
+        self.description = self.add_description.get()
+        TransactionController.add(
+            self.category,
+            self.amount,
+            self.type,
+            self.date,
+            self.description
+        )
+        # Обновить данные таблицы Treeview
+        self.table()
+        # Очистить поля ввода
+        self.clear()
+
+    def clear(self):
+        '''
+        Метод очистит окна Treeview
+        :return:
+        '''
+        self.add_category.delete(0, END)  # c 0-го идекса до конца
+        self.add_amount.delete(0, END)  # c 0-го идекса до конца
+        self.add_type.delete(0, END)  # c 0-го идекса до конца
+        self.add_date.delete(0, END)  # c 0-го идекса до конца
+        self.add_description.delete(0, END)  # c 0-го идекса до конца
+
+    def row_selected(self, event):
+        selected = self.table_data.selection()
+        # Проверить, если строки не выбранны
+        if not selected:
+            return  # Завершить работу метода
+        self.row = self.table_data.selection()[0]
+        self.id = self.table_data.item(self.row, "values")[0]
+        return self.id
+
+if __name__ == "__main__":
+    window = TransactionView()
+    window.mainloop()
+
+
