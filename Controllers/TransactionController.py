@@ -41,9 +41,35 @@ class TransactionController:
     def get_category(cls, category):
         return Transaction.select().where(Transaction.category == category)
 
-    # # Показать баланс
-    # @classmethod
-    # def get_balance(cls, category):
+    # Показать баланс
+    @classmethod
+    def get_balance(cls):
+        """
+        Возвращает словарь с общими суммами:
+        {
+            "income": общий доход,
+            "expense": общий расход,
+            "balance": income - expense
+        }
+        """
+        income = 0.0
+        expense = 0.0
+
+        for transaction in cls.get():
+            amount = float(transaction.amount)
+            trans_type = transaction.type.strip().lower()
+
+            if trans_type == "доход": # если тип транзакции - доход
+                income += amount
+            elif trans_type == "расход": # если тип транзакции - расход
+                expense += amount
+
+        balance = income - expense # баланс = доходы - расходы
+        return {
+            "income": round(income, 2), # общий доход
+            "expense": round(expense, 2), # общий расход
+            "balance": round(balance, 2) # баланс = доходы - расходы.
+        }
 
 
 if __name__ == "__main__":
@@ -65,4 +91,8 @@ if __name__ == "__main__":
     for item in TransactionController.get_category('Продукты'):  # Фильтрация по категории
         print(item.id, item.category, item.amount, item.type, item.date, item.description)
 
+    balance = TransactionController.get_balance()
+    print(f"Доходы: {balance['income']} рублей") # общий доход
+    print(f"Расходы: {balance['expense']} рублей") # общий расход
+    print(f"Баланс: {balance['balance']} рублей") # баланс = доходы - расходы
 
