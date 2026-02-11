@@ -9,7 +9,7 @@ class DeleteView(Tk):
 
         # Атрибуты окна
         self.title("Удаление транзакций")
-        self.geometry("1280x750")
+        self.geometry("1280x850")
 
         # Фрейм заголовка
         self.label_frame = ttk.Frame(self, padding=[20])

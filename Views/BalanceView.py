@@ -9,7 +9,7 @@ class BalanceView(Tk):
         super().__init__()
 
         self.title("Баланс")
-        self.geometry("1280x750")
+        self.geometry("1280x850")
 
         # Вычисление баланса
         self.income = 0

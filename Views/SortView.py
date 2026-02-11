@@ -11,7 +11,7 @@ class SortView(Tk):
 
         # Атрибуты окна
         self.title("Фильтрация по категории")
-        self.geometry("1280x750")
+        self.geometry("1280x850")
 
         # Фрейм Таблицы
         self.table_frame = ttk.Frame(self, padding=[20])
@@ -33,12 +33,6 @@ class SortView(Tk):
         # Превращает объекты из БД в список кортежей для таблицы
         self.table()
 
-
-
-
-
-
-
         # Кнопка закрытия окна / перехода в главное
         # переход на главное окно
         self.button_move = ttk.Button(self, text="Вернуться на главную страницу", command=self.move)
@@ -46,14 +40,26 @@ class SortView(Tk):
 
 
     # Для обновления данных в таблице создал метод добавления записей из БД
+    # def table(self):
+    #     # Очистить старые записи
+    #     for item in self.table_data.get_children(self.sort_string):
+    #         self.table_data.delete(item)
+    #     self.el = []
+    #     for el in TransactionController.get():
+    #         self.el.append((el.id, el.category, el.amount, el.type, el.date, el.description))
+    #     # Вывод данных из БД в таблицу
+    #     for item in self.el:
+    #         self.table_data.insert("", END, values=item)
+    #     self.table_data.pack()
+
+    # Для обновления данных в таблице создал метод добавления записей из БД
     def table(self):
-        # Очистить старые записи
-        for item in self.table_data.get_children(self.sort_string):
-            self.table_data.delete(item)
         self.el = []
-        for el in TransactionController.get():
-            self.el.append((el.id, el.category, el.amount, el.type, el.date, el.description))
-        # Вывод данных из БД в таблицу
+        for el in TransactionController.get_category(self.sort_string):
+            self.el.append(
+                (el.id, el.category, el.amount, el.type, el.date, el.description)
+            )
+        # Вывод данных из списка self.el в таблицу self.table_data
         for item in self.el:
             self.table_data.insert("", END, values=item)
         self.table_data.pack()

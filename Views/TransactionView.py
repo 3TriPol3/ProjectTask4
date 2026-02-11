@@ -13,7 +13,7 @@ class TransactionView(Tk):
 
         # Атрибуты окна
         self.title("Система учета финансов")
-        self.geometry("1280x750")
+        self.geometry("1280x850")
 
         # Фрейм Добавить транзакцию
         self.add_frame = ttk.Frame(self, borderwidth=1, relief=SOLID, padding=[18], # Внутренние отступы фрейма
@@ -197,7 +197,7 @@ class TransactionView(Tk):
     def sort(self):
         self.string = self.text_sort.get("0.0", "end")  # передачи значения из строки ввода text_search
         self.string = self.string.strip()
-        window = SortView(search_string=self.string)
+        window = SortView(sort_string=self.string)
         self.destroy()
 
 
