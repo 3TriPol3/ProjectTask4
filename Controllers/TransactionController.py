@@ -95,4 +95,3 @@ if __name__ == "__main__":
     print(f"Доходы: {balance['income']} рублей") # общий доход
     print(f"Расходы: {balance['expense']} рублей") # общий расход
     print(f"Баланс: {balance['balance']} рублей") # баланс = доходы - расходы
-

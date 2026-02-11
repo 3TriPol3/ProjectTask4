@@ -182,5 +182,3 @@ class TransactionView(Tk):
 if __name__ == "__main__":
     window = TransactionView()
     window.mainloop()
-
-
