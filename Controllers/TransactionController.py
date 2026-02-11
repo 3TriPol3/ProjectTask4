@@ -39,7 +39,8 @@ class TransactionController:
     # Найти(фильтровать) транзакцию по категории - category
     @classmethod
     def get_category(cls, category):
-        return Transaction.select().where(Transaction.category == category)
+        request = Transaction.select().where(Transaction.category == category)
+        return request
 
     # Показать баланс
     @classmethod

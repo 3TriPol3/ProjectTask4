@@ -91,29 +91,43 @@ class TransactionView(Tk):
         # Превращает объекты из БД в список кортежей для таблицы
         self.table()
 
-        # Фрейм для редактирования транзакции
+        # Фрейм для окна поиска по email
+        self.sort_frame = ttk.Frame(self,relief=SOLID, borderwidth=1, padding=[8, 10])
+        self.sort_frame.pack( fill=X,  # заполнение
+            padx=10,  # расположение по оси x от верней левой точки окна
+            pady=10,
+        )
+        self.label_sort = ttk.Label(self.sort_frame, text="Фильтрация по категории")
+        self.label_sort.grid(row=0)
+        self.text_sort = Text(self.sort_frame, height=5, width=50)
+        self.text_sort.grid(row=1, column=0)
+        self.button_sort = ttk.Button(self.sort_frame, text="Отфильтровать", command=self.sort)
+        self.button_sort.grid(row=1, column=2, padx=5, sticky="s")
+
+
+        # Фрейм окна удаления транзакций
         self.delete_frame = ttk.Frame(self, padding=[10])
         self.delete_frame.pack(anchor=CENTER, padx=5, pady=5)
 
-        # Фрейм окна удаления транзакций
+        # Фрейм окна баланса
         self.balance_frame = ttk.Frame(self, padding=[10])
         self.balance_frame.pack(anchor=CENTER, padx=5, pady=5)
 
-        # Фрейм окна баланса
-        self.sort_frame = ttk.Frame(self, padding=[10])
-        self.sort_frame.pack(anchor=CENTER, padx=5, pady=5)
+        # # Фрейм для редактирования транзакции
+        # self.edit_frame = ttk.Frame(self, padding=[10])
+        # self.edit_frame.pack(anchor=CENTER, padx=5, pady=5)
 
         # Кнопка перехода в окно удаления транзакций
         self.button_delete = ttk.Button(self.delete_frame, text="Удаление транзакций", command=self.delete_window)
         self.button_delete.grid(row=1, column=2, padx=5, sticky="s")
 
-        # Кнопка перехода в окно редактирования транзакций
+        # Кнопка перехода в окно баланса
         self.button_balance = ttk.Button(self.balance_frame, text="Показать баланс", command=self.balance_window)
         self.button_balance.grid(row=1, column=3, padx=5, sticky="s")
 
-        # Кнопка перехода в окно сортировки транзакций
-        self.button_sort = ttk.Button(self.sort_frame, text="Фильтрация транзакций", command=self.sort_window)
-        self.button_sort.grid(row=1, column=4, padx=5, sticky="s")
+        # # Кнопка перехода в окно сортировки транзакций
+        # self.button_sort = ttk.Button(self.edit_frame, text="Фильтрация транзакций", command=self.sort_window)
+        # self.button_sort.grid(row=1, column=4, padx=5, sticky="s")
 
 
     def delete_window(self):
@@ -178,6 +192,14 @@ class TransactionView(Tk):
         self.row = self.table_data.selection()[0]
         self.id = self.table_data.item(self.row, "values")[0]
         return self.id
+
+    # метод передачи значения из строки ввода text_sort в окно SortView
+    def sort(self):
+        self.string = self.text_sort.get("0.0", "end")  # передачи значения из строки ввода text_search
+        self.string = self.string.strip()
+        window = SortView(search_string=self.string)
+        self.destroy()
+
 
 if __name__ == "__main__":
     window = TransactionView()
