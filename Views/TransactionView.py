@@ -113,10 +113,6 @@ class TransactionView(Tk):
         self.balance_frame = ttk.Frame(self, padding=[10])
         self.balance_frame.pack(anchor=CENTER, padx=5, pady=5)
 
-        # # Фрейм для редактирования транзакции
-        # self.edit_frame = ttk.Frame(self, padding=[10])
-        # self.edit_frame.pack(anchor=CENTER, padx=5, pady=5)
-
         # Кнопка перехода в окно удаления транзакций
         self.button_delete = ttk.Button(self.delete_frame, text="Удаление транзакций", command=self.delete_window)
         self.button_delete.grid(row=1, column=2, padx=5, sticky="s")
@@ -124,10 +120,6 @@ class TransactionView(Tk):
         # Кнопка перехода в окно баланса
         self.button_balance = ttk.Button(self.balance_frame, text="Показать баланс", command=self.balance_window)
         self.button_balance.grid(row=1, column=3, padx=5, sticky="s")
-
-        # # Кнопка перехода в окно сортировки транзакций
-        # self.button_sort = ttk.Button(self.edit_frame, text="Фильтрация транзакций", command=self.sort_window)
-        # self.button_sort.grid(row=1, column=4, padx=5, sticky="s")
 
 
     def delete_window(self):
