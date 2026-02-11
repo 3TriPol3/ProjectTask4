@@ -69,7 +69,6 @@ class BalanceView(Tk):
         from Views.TransactionView import TransactionView
         window_home = TransactionView()
         self.destroy()
-        #123321123321
 
 
 if __name__ == "__main__":
