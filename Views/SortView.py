@@ -33,6 +33,12 @@ class SortView(Tk):
         # Превращает объекты из БД в список кортежей для таблицы
         self.table()
 
+
+
+
+
+
+
         # Кнопка закрытия окна / перехода в главное
         # переход на главное окно
         self.button_move = ttk.Button(self, text="Вернуться на главную страницу", command=self.move)
@@ -61,12 +67,6 @@ class SortView(Tk):
         self.id = self.table_data.item(self.row, "values")[0]
         return self.id
 
-    # метод передачи значения из строки ввода text_search в окно
-    # def search(self):
-    #     self.string = self.text_search.get("0.0", "end")  # передачи значения из строки ввода text_search
-    #     self.string = self.string.strip()
-    #     window = SortView(search_string=self.string)
-    #     self.destroy()
     def move(self):
         from Views.TransactionView import TransactionView
         window_home = TransactionView()

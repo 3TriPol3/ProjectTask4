@@ -121,7 +121,7 @@ class TransactionView(Tk):
         self.destroy()
 
     def sort_window(self):
-        window = SortView()
+        window = SortView(sort_string="")
         self.destroy()
 
     def balance_window(self):

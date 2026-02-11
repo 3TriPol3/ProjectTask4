@@ -53,7 +53,6 @@ class BalanceView(Tk):
         self.total_value = ttk.Label(
             self.balance_frame,
             text=f"{self.balance} рублей",
-            # text=f"{self.balance:.2f} рублей",
             foreground="green" if self.balance >= 0 else "red" # Определяет цвет текста в зависимости от значения self.balance.
         )
 
